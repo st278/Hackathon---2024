@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Steampunk Dashboard</title>
+    <link
+      href="https://fonts.googleapis.com/css2?family=UnifrakturCook:wght@700&display=swap"
+      rel="stylesheet"
+    />
+    <link
+      href="src\Images\istockphoto-1478942893-640_adpp_is.mp4"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="src/styles.css" />
+  </head>
+  <body class="index-page dark-theme">
+    <header>
+      <h1>Steampunk Dashboard</h1>
+    </header>
+    <main class="dashboard">
+      <button id="weather-section" class="dashboard-section" onclick="window.location.href='weather.html'">
+        <h2>Weather</h2>
+        <div id="weather-data">Loading...</div>
+      </button>
+      <button id="stock-section" class="dashboard-section" onclick="updateStock()">
+        <h2>Stock Market</h2>
+        <div id="stock-data">Loading...</div>
+      </button>
+      <button id="goal-section" class="dashboard-section" onclick="window.location.href='tracker.html'">
+        <h2>Goal Tracking</h2>
+        <div id="goal-display">Loading...</div>
+      </button>
+    </main>
+    <script>
+      // Example of dynamic content updates for Weather and Stock
+      function updateWeather() {
+        document.getElementById('weather-data').textContent = `Temperature: ${Math.floor(Math.random() * 100)}°F`;
+      }
+
+      function updateStock() {
+        document.getElementById('stock-data').textContent = `Stock Price: $${(Math.random() * 1000).toFixed(2)}`;
+      }
+
+      // Load goal progress from localStorage
+      function loadGoalProgress() {
+        const savedGoal = JSON.parse(localStorage.getItem('goal'));
+        const goalDisplay = document.getElementById('goal-display');
+
+        if (savedGoal && savedGoal.name) {
+          const percentage = ((savedGoal.progress / savedGoal.target) * 100).toFixed(1);
+          goalDisplay.innerHTML = `
+            <p>${savedGoal.name}: ${savedGoal.progress} / ${savedGoal.target}</p>
+            <div class="progress-bar">
+              <div class="progress" style="width: ${percentage}%">${percentage}%</div>
+            </div>
+          `;
+        } else {
+          goalDisplay.textContent = 'Click to view or edit your goals!';
+        }
+      }
+
+      // Initial load and update every 3 seconds
+      document.addEventListener('DOMContentLoaded', () => {
+        loadGoalProgress(); // Load goal progress on initial page load
+        updateWeather();
+        updateStock();
+      });
+
+      // Periodically update data
+      setInterval(updateWeather, 3000);
+      setInterval(updateStock, 3000);
+      setInterval(loadGoalProgress, 3000);
+    </script>
+  </body>
+</html>
